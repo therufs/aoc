@@ -9,49 +9,22 @@ SOLUTION_2 = [30,1,1,4,2,5,6,0,99]
 TEST_PROGRAM_3 = [2,3,0,3,99]
 SOLUTION_3 = [2,3,0,6,99]
 
-ADHOC_TEST = [2, 1, 2, 3,
-              1, 5, 6, 7,
-              2, 9, 10, 11,
-              2, 13, 14, 15,
-              99, 17]
-
-OPERATIONS = {
-  1 => :+,
-  2 => :*,
-  99 => :halt
-}
-
 def compute(program)
   index = 0
   loop do
-    fm = program[index..index + 3]
-    puts "Operating on #{fm}, index #{index}"
-    #require 'pry-byebug'; byebug
-    case fm[0]
+    frame = program[index..index + 3]
+    case frame[0]
     when 1 then operator = :+
     when 2 then operator = :*
     when 99 then puts program.to_s; return program
     else raise 'oh no'
     end
-    operand_1 = program[fm[1]]
-    operand_2 = program[fm[2]]
+    operand_1 = program[frame[1]]
+    operand_2 = program[frame[2]]
     output = operand_1.send operator, operand_2
-    #puts "Operands #{operand_1} and #{operand_2}; operator #{operator}"
-    #puts "Yielding output #{output} into #{fm[3]} of" 
-    #pp program
-    #require 'pry-byebug'; byebug
-    program[fm[3]] = output
+    program[frame[3]] = output
     index += 4
   end
 end
 
-def pp(program)
-  remaining = program.length
-  index = 0
-  while remaining > 8
-    puts "((#{index})) #{program[index..index + 7].to_s}"
-    remaining = remaining - 8
-    index += 8
-  end
-  puts program[index..-1].to_s
-end
+compute(PROGRAM)
