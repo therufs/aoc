@@ -27,4 +27,31 @@ def compute(program)
   end
 end
 
-compute(PROGRAM)
+#compute(PROGRAM)
+
+def brute_force_find(answer)
+  noun = 0
+  verb = 0
+  while noun <= 99 do
+    puts "noun #{noun}"
+    program = PROGRAM.dup
+    program[1] = noun
+    while verb <= 99 do
+      subroutine = program.dup
+      subroutine[2] = verb
+      begin
+        result = compute(subroutine)[0]
+      rescue # "Just don't write any bugs"
+      end
+      if result == answer
+        return subroutine
+      end
+      verb += 1
+    end
+    verb = 0
+    noun += 1
+  end
+end
+
+winning = brute_force_find(19690720)
+puts (winning[1]*100 + winning[2])
